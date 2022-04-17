@@ -1,0 +1,66 @@
+class Thread1 implements Runnable
+{
+	public void run()
+	{
+		int p=0;
+		while(p<3) 
+		{
+			System.out.println("Hello");
+			try 
+			{
+				Thread.sleep(1000);
+			}
+			catch(Exception a) 
+			{
+				System.out.println("Sleep");
+			}
+			p++;
+		}
+	}
+}
+class Thread2 implements Runnable
+{
+	public void run() 
+	{
+		int p=0;
+		while(p<3) 
+		{
+			System.out.println("Hi");
+			try
+			{
+				Thread.sleep(3000);
+			}
+			catch(Exception a)
+			{
+				System.out.println("Sleep");
+			}
+			p++;
+		}
+	}
+}
+class Thread3 implements Runnable
+{
+	public void run() 
+	{
+		int p=0;
+		while(p<3) 
+		{
+			System.out.println("How Are You?");
+			p++;
+		}
+	}
+}
+public class Main
+{
+	public static void main(String[] args) 
+	{
+		Thread t  = new Thread(new Thread1());
+		Thread t1  = new Thread(new Thread2());
+		Thread t2  = new Thread(new Thread3());
+		
+		t.start();
+		t1.start();
+		t2.start();
+		
+	}
+}
