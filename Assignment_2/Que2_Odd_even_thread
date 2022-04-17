@@ -1,0 +1,52 @@
+class Threadodd extends Thread
+{
+	public void run() 
+	{
+		try 
+		{
+			Thread.sleep(1000);
+			for(int p=1;p<=100;p++) 
+			{
+				if(p%2!=0) 
+				{
+					System.out.println("Thread1 : "+p);
+				}
+			}
+		}
+		catch(Exception a) 
+		{
+			
+		}
+	}
+}
+class Threadeven extends Thread
+{
+	public void run() 
+	{
+		try 
+		{
+			Thread.sleep(1000);
+			for(int p=1;p<=100;p++) 
+			{
+				if(p%2==0) 
+				{
+					System.out.println("Thread2 : "+p);
+				}
+			}
+		}
+		catch(Exception a) 
+		{
+			
+		}
+	}
+}
+public class Main 
+{
+	public static void main(String[] args) 
+	{
+		Threadodd odd = new Threadodd();
+		Threadeven even = new Threadeven();
+		odd.start();
+		even.start();
+	}
+}
