@@ -1,0 +1,50 @@
+import java.util.*;
+import java.io.*;
+public class Main 
+{
+	public static void main(String[] args)
+	{
+		try 
+		{
+		    
+			Scanner sc= new Scanner(System.in);
+			int c = 0;
+			FileReader file1 = new FileReader("C:\Users\150258\OneDrive - Arrow Electronics, Inc\Desktop\java.txt");
+			
+			System.out.println("Enter The Word You Want To Replace It :");
+			String W1 =sc.nextLine();
+			
+			System.out.println("Enter The Word You Want With Relace :");
+			String W2 =sc.nextLine();
+			
+			String message=" ";
+			Scanner p1 = new Scanner(file1);
+		    while(p1.hasNext()){
+	            message += p1.next()+" ";
+	        }
+		    System.out.println("File Before To Replace Word:"+message);
+		    Scanner p2 = new Scanner(message);
+		    String message1;
+		    while(p2.hasNext()){
+	            message1 = p2.next();
+	            if(message1.equals(W1)) {
+	            	count++;
+	            }
+	        }
+	        
+		    message = message.replace(W1,W2);
+		    file1.close();
+		    
+		    System.out.println("Total Replaced Words are:"+count);
+		    System.out.println("File After Replacing The Word:"+message);
+		    
+		    sc.close();
+		    p1.close();
+		    p2.close();
+		}
+		catch(Exception e)
+		{
+			
+		}
+	}
+}
