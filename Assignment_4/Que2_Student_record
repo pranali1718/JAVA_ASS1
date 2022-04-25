@@ -1,0 +1,85 @@
+import java.sql.*;
+import java.util.*;
+
+public class Main 
+{
+	public static void main(String[] args) throws SQLException, ClassNotFoundException
+	{
+		try 
+		{
+			Connection conn;
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/employee","root","");
+			System.out.println("Connected With Database Successfully...");
+			Scanner s = new Scanner(System.in);
+			DatabaseMetaData dbm = conn.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "resultData", null);
+			if (tables.next()) 
+			{
+				System.out.println("Table Is Already  EExist");
+			}
+			else
+			{
+				Statement st1 = conn.createStatement();
+				String str = "CREATE TABLE resultData"+"(RollNo int, " +"Name varchar(255)," +"subject1 int,"+"subject2 int,"+"subject3 int,"+"Percentage double )"; 
+					
+				st1.executeUpdate(str);
+				System.out.println("Result Table Is Created");
+			}
+			
+			System.out.print("Enter The Number Of Students You Want To Add Marks : ");
+			n = s.nextInt();
+			while(n != 0){
+				System.out.print("Enter The Roll Number : ");
+				int Roll = s.nextInt();
+					
+				System.out.print("Enter The Name of Student : ");
+				String Name = s.next();
+					
+				System.out.print("Enter The Marks of Subject1 : ");
+				int subject1 = s.nextInt();
+					
+				System.out.print("Enter The Marks Of Subject2 : ");
+				int subject2 = s.nextInt();
+					
+				System.out.print("Enter The Marks Of Subject3 : ");
+				int subject3 = s.nextInt();
+				
+				double percentage = (double)(subject1 + subject2 + subject3)/3;
+				
+				PreparedStatement st2 = conn.prepareStatement("insert into resultData(RollNo, Name, subject1, subject2, subject3, Percentage) values(?, ?, ?, ?, ?, ?)");
+				st2.setInt(1, Roll);
+				st2.setString(2, Name);
+				st2.setInt(3, subject1);
+				st2.setInt(4, subject2);
+				st2.setInt(5, subject3);
+				st2.setDouble(6, percentage);
+				st2.executeUpdate();
+				System.out.println("Successfully inserted");
+				System.out.println();
+				n--;
+			}		
+			System.out.print("Enter the Rollno for getting marksheet: ");
+			int Roll = s.nextInt();
+			s.close();
+			
+			PreparedStatement st3 = conn.prepareStatement("select * from resultData where RollNo = ?");
+			st3.setInt(1, Roll);
+			ResultSet marksheet = st3.executeQuery();
+			
+			while(marksheet.next())
+			{
+				System.out.println("Roll no: " + marksheet.getInt("RollNo"));
+				System.out.println("Name: " + marksheet.getString("Name"));
+				System.out.println("subject1 marks: " + marksheet.getInt("subject1"));
+				System.out.println("subject2 marks: " + marksheet.getInt("subject2"));
+				System.out.println("subject3 marks: " + marksheet.getInt("subject3"));
+				System.out.println("Percentage: " + marksheet.getDouble("Percentage"));
+			}
+			conn.close();
+		}
+		catch(Exception e) {}
+		
+	}
+}
