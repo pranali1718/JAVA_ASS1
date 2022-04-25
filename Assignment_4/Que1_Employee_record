@@ -1,1 +1,68 @@
 
+import java.sql.*;
+import java.util.*;
+
+public class Main 
+
+{
+	public static void main(String[] args) throws SQLException, ClassNotFoundException 
+	{
+	try 
+    	{
+			Connection conn;
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/employee","root","");
+			System.out.println("Connected to Tha Database Successfully...");
+			
+			
+			DatabaseMetaData db = conn.getMetaData();
+			
+			ResultSet tables=db.getTables(null,null,"employeeData",null);
+			if(tables.next()) {
+				System.out.println("The Table is Exist...");
+	    }
+			else 
+			{
+				Statement st = conn.createStatement();
+				String str = "CREATE TABLE employeeData"+"(empId int, "+"empName varchar(200),"+"empAge int,"+ "empSalary int)";
+				st.executeUpdate(str);
+				System.out.println("Table created successfully...");
+			}
+			Scanner s = new Scanner(System.in);
+			System.out.println("Enter number of records you want to enter:");
+			int n = s.nextInt();
+			while(n!=0) 
+			{
+				System.out.println("Enter The Employee Id : ");
+				int ID = s.nextInt();
+				
+				System.out.println("Enter The Employee Name : ");
+				String Name=s.next();
+				
+				System.out.println("Enter The Employee Age : ");
+				int Age = s.nextInt();
+				
+				System.out.println("Enter Employee Salary : ");
+				int Salary = s.nextInt();
+				
+				PreparedStatement pst = conn.prepareStatement("insert into employeeData(empId,empName,empAge,empSalary) values(?,?,?,?)");
+				pst.setInt(1, ID);
+				pst.setString(2, Name);
+				pst.setInt(3, Age);
+				pst.setInt(4, Salary);
+				pst.executeUpdate();
+				
+				System.out.println("Data Inserted Successfully...");
+				n--;
+			}
+			System.out.println("All Data Inserted Successfully...");
+			
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	
+	}
+}
